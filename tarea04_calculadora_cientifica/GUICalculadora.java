@@ -6,12 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-// ¡IMPORTANTE! Importamos la clase anidada Token para poder usarla
 import tarea04_calculadora_cientifica.Tokenizador.Token;
 
 public class GUICalculadora extends JFrame implements ActionListener {
 
-    // ... (El constructor y la declaración de botones no cambian) ...
     private JTextField pantalla;
     private String[] etiquetasBotones = {
         "SHIFT", "ON",
@@ -58,13 +56,16 @@ public class GUICalculadora extends JFrame implements ActionListener {
     switch (comando) {
         case "=":
             if (!textoActual.isEmpty()) {
-                List<Token> tokens = Tokenizador.tokenizar(textoActual);
-                System.out.println("Tokens (Infijo): " + tokens);
+                try {
+                    List<Token> tokens = Tokenizador.tokenizar(textoActual);
+                    List<Token> tokensRPN = ShuntingYard.convertirAPostfijo(tokens);
+                    double resultado = EvaluadorRPN.evaluar(tokensRPN);
 
-                List<Token> tokensRPN = ShuntingYard.convertirAPostfijo(tokens);
-                System.out.println("Tokens (RPN): " + tokensRPN);
+                    pantalla.setText(String.valueOf(resultado));
 
-                pantalla.setText("Revisa la consola para ver la RPN!");
+                } catch (Exception ex) {
+                    pantalla.setText("Error");
+                }
             }
             break;
             case "AC":
@@ -76,8 +77,12 @@ public class GUICalculadora extends JFrame implements ActionListener {
                 }
                 break;
             default:
-                pantalla.setText(textoActual.replace("X", "*") + comando); 
-                break; 
+                if(pantalla.getText().equals("Error") || pantalla.getText().contains(".")){
+                } else if (Character.isDigit(comando.charAt(0)) && !pantalla.getText().isEmpty()) {
+                } else {
+                }
+                pantalla.setText(textoActual + comando);
+                break;
         }
     }
 

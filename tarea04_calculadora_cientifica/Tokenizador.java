@@ -6,9 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tokenizador {
-
-    // --- Definiciones de Token anidadas aquí ---
-
     public static enum TipoToken {
         NUMBER, OPERATOR, FUNCTION, LPAREN, RPAREN, CONSTANT, FACTORIAL
     }
@@ -27,8 +24,6 @@ public class Tokenizador {
             return "Token{" + "tipo=" + tipo + ", valor='" + valor + '\'' + '}';
         }
     }
-
-    // --- Lógica del Tokenizador ---
 
     public static List<Token> tokenizar(String expresion) {
         List<Token> tokens = new ArrayList<>();
