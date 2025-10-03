@@ -62,6 +62,15 @@ public class EvaluadorRPN {
                         case "Ln": 
                             pila.push(Math.log(argumento));
                             break;
+                        case "asin":
+                            pila.push(Math.toDegrees(Math.asin(argumento)));
+                            break;
+                        case "acos":
+                            pila.push(Math.toDegrees(Math.acos(argumento)));
+                            break;
+                        case "atan":
+                            pila.push(Math.toDegrees(Math.atan(argumento)));
+                            break;
                     }
                     break;
                 
