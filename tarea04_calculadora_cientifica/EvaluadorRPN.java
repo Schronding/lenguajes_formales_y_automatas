@@ -47,6 +47,12 @@ public class EvaluadorRPN {
                 case FUNCTION:
                     double argumento = pila.pop();
                     switch (token.valor) {
+                        case "exp":
+                            pila.push(Math.exp(argumento)); // Math.exp(x) es e^x
+                            break;
+                        case "√":
+                            pila.push(Math.sqrt(argumento));
+                            break;
                         case "sin":
                             pila.push(Math.sin(Math.toRadians(argumento)));
                             break;

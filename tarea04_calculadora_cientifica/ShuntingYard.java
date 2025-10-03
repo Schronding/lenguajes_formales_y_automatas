@@ -77,7 +77,11 @@ public class ShuntingYard {
             }
         }
         while (!operadores.isEmpty()) {
-            salida.add(operadores.pop());
+            Token operador = operadores.pop();
+            if (operador.tipo == TipoToken.LPAREN) {
+                throw new IllegalArgumentException("Error: Paréntesis no balanceados.");
+            }
+            salida.add(operador);
         }
 
         return salida;

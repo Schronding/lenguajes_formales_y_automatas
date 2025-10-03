@@ -32,7 +32,7 @@ public class GUICalculadora extends JFrame implements ActionListener {
         mapaShift.put("cos", "acos");
         mapaShift.put("tan", "atan");
         mapaShift.put("Log", "10^");
-        mapaShift.put("Ln", "e^");
+        mapaShift.put("Ln", "exp");
         mapaShift.put("x²", "∛"); 
         mapaShift.put("^", "ʸ√x");
 
@@ -97,7 +97,7 @@ public class GUICalculadora extends JFrame implements ActionListener {
 
             double resultado = EvaluadorRPN.evaluar(tokensRPN);
 
-            pantalla.setText(String.valueOf(resultado));
+            pantalla.setText(String.format("%." + 10 + "g", resultado));
             esResultado = true;
 
         } catch (Exception ex) {
@@ -122,6 +122,8 @@ public class GUICalculadora extends JFrame implements ActionListener {
                 }
                 if(comando.equals("10^") || comando.equals("e^")){
                     pantalla.setText(pantalla.getText() + (comando.equals("10^") ? "10^" : "Exp("));
+                } else if (comando.equals("exp")) {
+                    pantalla.setText(pantalla.getText() + "exp(");
                 } else {
                     pantalla.setText(pantalla.getText() + comando);
                 }
