@@ -1,11 +1,17 @@
 package tarea04_calculadora_cientifica;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
+// ¡IMPORTANTE! Importamos la clase anidada Token para poder usarla
+import tarea04_calculadora_cientifica.Tokenizador.Token;
 
 public class GUICalculadora extends JFrame implements ActionListener {
 
+    // ... (El constructor y la declaración de botones no cambian) ...
     private JTextField pantalla;
     private String[] etiquetasBotones = {
         "SHIFT", "ON",
@@ -38,12 +44,11 @@ public class GUICalculadora extends JFrame implements ActionListener {
             boton.addActionListener(this);
             panelBotones.add(boton);
         }
-
         add(panelBotones, BorderLayout.CENTER);
-
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -52,6 +57,13 @@ public class GUICalculadora extends JFrame implements ActionListener {
 
         switch (comando) {
             case "=":
+                if (!textoActual.isEmpty()) {
+                    // La llamada es igual, pero ahora la clase Token pertenece a Tokenizador
+                    List<Token> tokens = Tokenizador.tokenizar(textoActual);
+                    System.out.println("Expresión: " + textoActual);
+                    System.out.println("Tokens: " + tokens);
+                    pantalla.setText("Revisa la consola para ver los tokens!");
+                }
                 break;
             case "AC":
                 pantalla.setText("");
