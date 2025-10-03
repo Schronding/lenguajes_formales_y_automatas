@@ -15,11 +15,11 @@ public class GUICalculadora extends JFrame implements ActionListener {
     private JTextField pantalla;
     private String[] etiquetasBotones = {
         "SHIFT", "ON",
-        "x!", "x⁻¹", "x³", "√", "x²", "xʸ",
+        "x!", "x⁻¹", "^", "√", "x²", "xʸ",
         "Log", "Ln", "sin", "cos", "tan", "(", ")",
         "7", "8", "9", "Del", "AC",
-        "4", "5", "6", "X", "+",
-        "1", "2", "3", "-",
+        "4", "5", "6", "X", "/",
+        "1", "2", "3", "+", "-",
         "0", ".", "Exp", "="
     };
 
@@ -52,19 +52,21 @@ public class GUICalculadora extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String comando = e.getActionCommand();
-        String textoActual = pantalla.getText();
+    String comando = e.getActionCommand();
+    String textoActual = pantalla.getText();
 
-        switch (comando) {
-            case "=":
-                if (!textoActual.isEmpty()) {
-                    // La llamada es igual, pero ahora la clase Token pertenece a Tokenizador
-                    List<Token> tokens = Tokenizador.tokenizar(textoActual);
-                    System.out.println("Expresión: " + textoActual);
-                    System.out.println("Tokens: " + tokens);
-                    pantalla.setText("Revisa la consola para ver los tokens!");
-                }
-                break;
+    switch (comando) {
+        case "=":
+            if (!textoActual.isEmpty()) {
+                List<Token> tokens = Tokenizador.tokenizar(textoActual);
+                System.out.println("Tokens (Infijo): " + tokens);
+
+                List<Token> tokensRPN = ShuntingYard.convertirAPostfijo(tokens);
+                System.out.println("Tokens (RPN): " + tokensRPN);
+
+                pantalla.setText("Revisa la consola para ver la RPN!");
+            }
+            break;
             case "AC":
                 pantalla.setText("");
                 break;
@@ -74,8 +76,8 @@ public class GUICalculadora extends JFrame implements ActionListener {
                 }
                 break;
             default:
-                pantalla.setText(textoActual + comando);
-                break;
+                pantalla.setText(textoActual.replace("X", "*") + comando); 
+                break; 
         }
     }
 
