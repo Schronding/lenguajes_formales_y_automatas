@@ -20,7 +20,13 @@ public class Tokenizador {
 
     public static List<Token> tokenizar(String expresion) {
         List<Token> tokens = new ArrayList<>();
-        String patronTokens = "(?<NUMBER>[0-9]*\\.?[0-9]+)|(?<FUNCTION>sin|cos|tan|Log|Ln|asin|acos|atan|√|exp)|(?<OPERATOR>[+\\-X/\\^])|(?<FACTORIAL>!)|(?<LPAREN>\\()|(?<RPAREN>\\))|(?<CONSTANT>Exp)";
+        String patronTokens = "(?<NUMBER>[0-9]*\\.?[0-9]+)|" +
+                                "(?<FUNCTION>sin|cos|tan|Log|Ln|asin|acos|atan|sqrt|exp|fact|inv|sqr|cube)|" +
+                                "(?<OPERATOR>[+\\-X/\\^])|" +
+                                "(?<FACTORIAL>!)|" +
+                                "(?<LPAREN>\\()|" +
+                                "(?<RPAREN>\\))|" +
+                                "(?<CONSTANT>e)";        
         Pattern pattern = Pattern.compile(patronTokens);
         Matcher matcher = pattern.matcher(expresion);
         while (matcher.find()) {

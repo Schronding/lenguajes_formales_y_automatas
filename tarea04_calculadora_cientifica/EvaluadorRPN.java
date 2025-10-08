@@ -6,6 +6,18 @@ import tarea04_calculadora_cientifica.Tokenizador.Token;
 
 public class EvaluadorRPN {
 
+    private static double factorial(double n) {
+        if (n < 0 || n != Math.floor(n)) {
+            throw new IllegalArgumentException("Factorial solo para enteros no negativos.");
+        }
+        if (n == 0) return 1;
+        double resultado = 1;
+        for (int i = 1; i <= n; i++) {
+            resultado *= i;
+        }
+        return resultado;
+    }
+
     public static double evaluar(List<Token> tokensRPN) {
         Stack<Double> pila = new Stack<>();
 
@@ -16,7 +28,7 @@ public class EvaluadorRPN {
                     break;
                 
                 case CONSTANT:
-                    if (token.valor.equals("Exp")) {
+                    if (token.valor.equals("e")) {
                         pila.push(Math.E);
                     }
                     break;
@@ -48,10 +60,22 @@ public class EvaluadorRPN {
                     double argumento = pila.pop();
                     switch (token.valor) {
                         case "exp":
-                            pila.push(Math.exp(argumento)); // Math.exp(x) es e^x
+                            pila.push(Math.exp(argumento)); 
                             break;
-                        case "√":
+                        case "sqrt":
                             pila.push(Math.sqrt(argumento));
+                            break;
+                        case "sqr": // x²
+                            pila.push(Math.pow(argumento, 2));
+                            break;
+                        case "cube": // x³
+                            pila.push(Math.pow(argumento, 3));
+                            break;
+                        case "inv": // x⁻¹
+                            pila.push(1 / argumento);
+                            break;
+                        case "fact":
+                            pila.push(factorial(argumento));
                             break;
                         case "sin":
                             pila.push(Math.sin(Math.toRadians(argumento)));
