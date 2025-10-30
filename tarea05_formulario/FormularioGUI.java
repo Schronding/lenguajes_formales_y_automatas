@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -180,12 +182,18 @@ public class FormularioGUI extends JFrame implements ActionListener {
         telCampo1 = new JTextField();
         telCampo2 = new JTextField();
         telCampo3 = new JTextField();
+        
         addPlaceholderLogic(telCampo1, "XXX");
         addPlaceholderLogic(telCampo2, "XXX");
         addPlaceholderLogic(telCampo3, "XXXX");
+        
+        addAutoTabLogic(telCampo1, telCampo2, 3);
+        addAutoTabLogic(telCampo2, telCampo3, 3);
+
         panel.add(telCampo1);
         panel.add(telCampo2);
         panel.add(telCampo3);
+        
         campos.put("Teléfono1", telCampo1);
         campos.put("Teléfono2", telCampo2);
         campos.put("Teléfono3", telCampo3);
@@ -198,14 +206,21 @@ public class FormularioGUI extends JFrame implements ActionListener {
         cardCampo2 = new JTextField();
         cardCampo3 = new JTextField();
         cardCampo4 = new JTextField();
+        
         addPlaceholderLogic(cardCampo1, "XXXX");
         addPlaceholderLogic(cardCampo2, "XXXX");
         addPlaceholderLogic(cardCampo3, "XXXX");
         addPlaceholderLogic(cardCampo4, "XXXX");
+
+        addAutoTabLogic(cardCampo1, cardCampo2, 4);
+        addAutoTabLogic(cardCampo2, cardCampo3, 4);
+        addAutoTabLogic(cardCampo3, cardCampo4, 4);
+
         panel.add(cardCampo1);
         panel.add(cardCampo2);
         panel.add(cardCampo3);
         panel.add(cardCampo4);
+        
         campos.put("Tarjeta1", cardCampo1);
         campos.put("Tarjeta2", cardCampo2);
         campos.put("Tarjeta3", cardCampo3);
@@ -301,7 +316,7 @@ public class FormularioGUI extends JFrame implements ActionListener {
         paises.add("PR : PUERTO RICO");
         paises.add("GB : REINO UNIDO");
         paises.add("CZ : CHECA, REPÚBLICA");
-        paises.add("DO : DOMINICANA, REPÚBLICA");
+        paises.add("DO : DOMICANA, REPÚBLICA");
         paises.add("RU : RUSIA");
         paises.add("ZA : SUDÁFRICA");
         paises.add("SE : SUECIA");
@@ -350,6 +365,20 @@ public class FormularioGUI extends JFrame implements ActionListener {
         entidades.add("YUC : Yucatán");
         entidades.add("ZAC : Zacatecas");
         return entidades;
+    }
+
+    private void addAutoTabLogic(JTextField source, JComponent target, int lengthLimit) {
+        source.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) { checkLength(); }
+            public void removeUpdate(DocumentEvent e) { }
+            public void insertUpdate(DocumentEvent e) { checkLength(); }
+            
+            public void checkLength() {
+                if (source.getText().length() == lengthLimit) {
+                    SwingUtilities.invokeLater(() -> target.requestFocusInWindow());
+                }
+            }
+        });
     }
 
     private void generarRFC() {
