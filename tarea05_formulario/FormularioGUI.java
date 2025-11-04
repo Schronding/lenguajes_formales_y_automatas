@@ -16,6 +16,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -382,13 +383,48 @@ public class FormularioGUI extends JFrame implements ActionListener {
     }
 
     private void generarRFC() {
-        System.out.println("Llamando a la lógica de generación de RFC...");
-        campoRFC.setText("RFC_GENERADO_DEMO");
+        try {
+            String nombre = ((JTextField) campos.get("Nombre(s)")).getText();
+            String apPaterno = ((JTextField) campos.get("Apellido Paterno")).getText();
+            String apMaterno = ((JTextField) campos.get("Apellido Materno")).getText();
+            Date fechaNac = (Date) datePicker.getModel().getValue();
+
+            if (nombre.isEmpty() || apPaterno.isEmpty() || fechaNac == null) {
+                JOptionPane.showMessageDialog(this, "Debe llenar Nombre, Apellido Paterno y Fecha de Nacimiento.", "Error de generación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String rfc = GeneradorCurp.generarParteRFC(nombre, apPaterno, apMaterno, fechaNac);
+            campoRFC.setText(rfc);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar RFC. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void generarCURP() {
-        System.out.println("Llamando a la lógica de generación de CURP...");
-        campoCURP.setText("CURP_GENERADO_DEMO");
+        try {
+            String nombre = ((JTextField) campos.get("Nombre(s)")).getText();
+            String apPaterno = ((JTextField) campos.get("Apellido Paterno")).getText();
+            String apMaterno = ((JTextField) campos.get("Apellido Materno")).getText();
+            Date fechaNac = (Date) datePicker.getModel().getValue();
+            String genero = (String) ((JComboBox<?>) campos.get("Género")).getSelectedItem();
+            String entidad = (String) ((JComboBox<?>) campos.get("Entidad Federativa")).getSelectedItem();
+
+            if (nombre.isEmpty() || apPaterno.isEmpty() || fechaNac == null || genero.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe llenar Nombre, Apellidos, Fecha y Género.", "Error de generación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (comboNacionalidad.getSelectedItem().toString().startsWith("MX") && entidad.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Si la nacionalidad es Mexicana, debe seleccionar una Entidad Federativa.", "Error de generación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String curp = GeneradorCurp.generarParteCURP(nombre, apPaterno, apMaterno, fechaNac, genero, entidad);
+            campoCURP.setText(curp);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar CURP. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void addPlaceholderLogic(JTextField textField, String placeholder) {
@@ -455,7 +491,18 @@ public class FormularioGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this, "Validación pendiente de actualizarse a la nueva GUI");
+        Map<String, String> errores = ValidadorFormulario.validar(this.campos, this.placeholders);
+        if (errores.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "¡Formulario validado exitosamente!", "Validación Correcta",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            StringBuilder mensajeError = new StringBuilder("Por favor, corrige los siguientes campos:\n\n");
+            errores.values().forEach(error -> mensajeError.append("- ").append(error).append("\n"));
+            JOptionPane.showMessageDialog(this,
+                    mensajeError.toString(), "Errores de Validación",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
