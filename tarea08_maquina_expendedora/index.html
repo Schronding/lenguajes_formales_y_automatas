@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Máquina Expendedora</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="maquina">
+        <div class="panel-productos">
+            <div class="producto" data-codigo="A1">
+                <img src="https://i.imgur.com/g8L3Yj2.png" alt="Nito">
+                <p>Nito <br> $18.00</p>
+                <span>A1</span>
+            </div>
+            <div class="producto" data-codigo="A2">
+                <img src="https://i.imgur.com/v8F3bX3.png" alt="Doritos">
+                <p>Doritos <br> $17.00</p>
+                <span>A2</span>
+            </div>
+            <div class="producto" data-codigo="A3">
+                <img src="https://i.imgur.com/O1b3dJt.png" alt="Sabritas">
+                <p>Sabritas <br> $16.00</p>
+                <span>A3</span>
+            </div>
+            <div class="producto" data-codigo="B1">
+                <img src="https://i.imgur.com/yWaWfQp.png" alt="Del Valle">
+                <p>Del Valle <br> $20.00</p>
+                <span>B1</span>
+            </div>
+            <div class="producto" data-codigo="B2">
+                <img src="https://i.imgur.com/fP5gSjQ.png" alt="Magdalenas">
+                <p>Magdalenas <br> $22.00</p>
+                <span>B2</span>
+            </div>
+            <div class="producto" data-codigo="B3">
+                <img src="https://i.imgur.com/v8F3bX3.png" alt="Ruffles">
+                <p>Ruffles <br> $17.00</p>
+                <span>B3</span>
+            </div>
+        </div>
+
+        <div class="panel-control">
+            <div class="pantalla" id="pantalla">Bienvenido</div>
+            
+            <div class="teclado">
+                <input type="text" id="input-codigo" maxlength="2" placeholder="A1">
+                <button id="btn-seleccionar">Seleccionar</button>
+            </div>
+            
+            <div class="panel-dinero">
+                <p>Insertar Dinero:</p>
+                <button onclick="insertarDinero(1)">$1</button>
+                <button onclick="insertarDinero(2)">$2</button>
+                <button onclick="insertarDinero(5)">$5</button>
+                <button onclick="insertarDinero(10)">$10</button>
+                <button onclick="insertarDinero(20)">$20</button>
+                <button onclick="insertarDinero(50)">$50</button>
+                <button onclick="insertarDinero(100)">$100</button>
+                <button onclick="insertarDinero(200)">$200</button>
+            </div>
+
+            <div class="panel-salida">
+                <div class="bandeja" id="bandeja-producto">Producto</div>
+                <div class="bandeja" id="bandeja-cambio">Cambio</div>
+            </div>
+            <button id="btn-cancelar">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

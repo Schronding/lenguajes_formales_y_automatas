@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.maquina {
+    display: flex;
+    width: 800px;
+    height: 600px;
+    border: 5px solid #333;
+    background-color: #1a1a1a;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.panel-productos {
+    width: 60%;
+    background-color: #444;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    border-right: 3px solid #333;
+}
+
+.producto {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+}
+.producto:hover {
+    background-color: #f0f0f0;
+}
+.producto img {
+    width: 80%;
+    height: auto;
+}
+.producto p {
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+.producto span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.panel-control {
+    width: 40%;
+    padding: 20px;
+    background-color: #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.pantalla {
+    height: 60px;
+    background-color: #a0e0a0;
+    color: #003300;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #555;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.teclado {
+    display: flex;
+    margin-bottom: 20px;
+}
+.teclado input {
+    width: 70%;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.teclado button {
+    width: 30%;
+    font-size: 14px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.panel-dinero {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.panel-dinero p {
+    margin-top: 0;
+}
+.panel-dinero button {
+    width: 60px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.panel-salida {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+}
+.bandeja {
+    width: 48%;
+    height: 50px;
+    background-color: #555;
+    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+}
+
+#btn-cancelar {
+    margin-top: 10px;
+    background-color: #d9534f;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
