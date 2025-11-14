@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     actualizarStockUI();
+    actualizarPantallaSaldo(); 
 });
 
 const inventario = {
@@ -8,7 +9,7 @@ const inventario = {
     'A3': { nombre: 'Sabritas', precio: 16, stock: 6 },
     'B1': { nombre: 'Del Valle', precio: 20, stock: 3 },
     'B2': { nombre: 'Mantecadas', precio: 22, stock: 4 },
-    'B3': { nombre: 'Ruffles', precio: 17, stock: 0 },
+    'B3': { nombre: 'Ruffles', precio: 17, stock: 1 },
 };
 
 let saldoActual = 0;
@@ -18,7 +19,7 @@ const bandejaProducto = document.getElementById('bandeja-producto');
 const bandejaCambio = document.getElementById('bandeja-cambio');
 
 document.getElementById('btn-seleccionar').addEventListener('click', seleccionarProducto);
-document.getElementById('btn-cancelar').addEventListener('click', cancelarTransaccion);
+document.getElementById('btn-cancelar').addEventListener('click', pedirCambio); 
 
 function actualizarStockUI() {
     for (const codigo in inventario) {
@@ -42,9 +43,13 @@ function actualizarPantalla(mensaje) {
     pantalla.textContent = mensaje;
 }
 
+function actualizarPantallaSaldo() {
+    pantalla.textContent = `Saldo: $${saldoActual.toFixed(2)}`;
+}
+
 function insertarDinero(monto) {
     saldoActual += monto;
-    actualizarPantalla(`Saldo: $${saldoActual.toFixed(2)}`);
+    actualizarPantallaSaldo();
     limpiarSalidas();
 }
 
@@ -53,44 +58,51 @@ function seleccionarProducto() {
     limpiarSalidas();
 
     if (!inventario[codigo]) {
-        actualizarPantalla(`Código "${codigo}" no existe.`);
+        actualizarPantalla(`Código "${codigo}" no válido`);
+        setTimeout(actualizarPantallaSaldo, 2000); 
         return;
     }
 
     const producto = inventario[codigo];
 
     if (producto.stock === 0) {
-        actualizarPantalla("Producto agotado.");
+        actualizarPantalla("Producto Agotado");
+        setTimeout(actualizarPantallaSaldo, 2000);
         return;
     }
 
     if (saldoActual < producto.precio) {
-        actualizarPantalla(`Saldo insuficiente. $${saldoActual.toFixed(2)} devueltos.`);
-        entregarCambio(saldoActual);
-        saldoActual = 0;
+        const faltante = producto.precio - saldoActual;
+        actualizarPantalla(`Faltan $${faltante.toFixed(2)}`);
+        setTimeout(actualizarPantallaSaldo, 2000);
         return;
     }
 
-    const cambio = saldoActual - producto.precio;
+    saldoActual -= producto.precio;
     producto.stock--;
-    saldoActual = 0;
 
     entregarProducto(producto.nombre);
-    entregarCambio(cambio);
-    actualizarPantalla(`Gracias por su compra!`);
+    
+    actualizarPantalla(`Entregando: ${producto.nombre}`);
+    
+    setTimeout(() => {
+        actualizarPantallaSaldo();
+    }, 2000);
+
     actualizarStockUI();
     inputCodigo.value = "";
 }
 
-function cancelarTransaccion() {
+function pedirCambio() {
     if (saldoActual > 0) {
         entregarCambio(saldoActual);
         saldoActual = 0;
-        actualizarPantalla("Transacción cancelada. Dinero devuelto.");
+        actualizarPantalla("Cambio devuelto");
+        setTimeout(actualizarPantallaSaldo, 2000);
     } else {
-        actualizarPantalla("Bienvenido");
+        actualizarPantalla("No hay saldo");
+        setTimeout(actualizarPantallaSaldo, 2000);
     }
-    limpiarSalidas();
     inputCodigo.value = "";
 }
 
@@ -104,11 +116,11 @@ function entregarProducto(nombreProducto) {
 }
 
 function entregarCambio(monto) {
-    if (monto > 0) {
-        bandejaCambio.textContent = `$${monto.toFixed(2)}`;
-    } else {
-        bandejaCambio.textContent = "$0.00";
-    }
+    bandejaCambio.textContent = `$${monto.toFixed(2)}`;
+    bandejaCambio.classList.add('producto-entregado');
+    setTimeout(() => {
+        bandejaCambio.classList.remove('producto-entregado');
+    }, 500);
 }
 
 function limpiarSalidas() {
