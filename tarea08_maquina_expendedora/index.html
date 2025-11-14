@@ -13,36 +13,48 @@
                 <img src="images/nito.png" alt="Nito">
                 <p>Nito <br> $18.00</p>
                 <span>A1</span>
+                <span class="stock-contador"></span>
             </div>
             <div class="producto" data-codigo="A2">
                 <img src="images/chetos.png" alt="Chetos">
                 <p>Chetos <br> $17.00</p>
                 <span>A2</span>
+                <span class="stock-contador"></span>
             </div>
             <div class="producto" data-codigo="A3">
                 <img src="images/sabritas.png" alt="Sabritas">
                 <p>Sabritas <br> $16.00</p>
                 <span>A3</span>
+                <span class="stock-contador"></span>
             </div>
             <div class="producto" data-codigo="B1">
                 <img src="images/del_valle.png" alt="Del Valle">
                 <p>Del Valle <br> $20.00</p>
                 <span>B1</span>
+                <span class="stock-contador"></span>
             </div>
             <div class="producto" data-codigo="B2">
                 <img src="images/mantecadas.png" alt="Mantecadas">
                 <p>Mantecadas <br> $22.00</p>
                 <span>B2</span>
+                <span class="stock-contador"></span>
             </div>
             <div class="producto" data-codigo="B3">
                 <img src="images/ruffles.png" alt="Ruffles">
                 <p>Ruffles <br> $17.00</p>
                 <span>B3</span>
+                <span class="stock-contador"></span>
             </div>
         </div>
 
         <div class="panel-control">
             <div class="pantalla" id="pantalla">Bienvenido</div>
+
+            <div class="panel-instrucciones">
+                <p>1. Inserte dinero</p>
+                <p>2. Escriba el código (ej: A1)</p>
+                <p>3. Presione "Seleccionar"</p>
+            </div>
             
             <div class="teclado">
                 <input type="text" id="input-codigo" maxlength="2" placeholder="A1">
@@ -62,10 +74,16 @@
             </div>
 
             <div class="panel-salida">
-                <div class="bandeja" id="bandeja-producto">Producto</div>
-                <div class="bandeja" id="bandeja-cambio">Cambio</div>
+                <div>
+                    <p class="etiqueta-bandeja">PRODUCTO</p>
+                    <div class="bandeja" id="bandeja-producto"></div>
+                </div>
+                <div>
+                    <p class="etiqueta-bandeja">CAMBIO</p>
+                    <div class="bandeja" id="bandeja-cambio"></div>
+                </div>
             </div>
-            <button id="btn-cancelar">Cancelar</button>
+            <button id="btn-cancelar">Cancelar / Devolver</button>
         </div>
     </div>
 

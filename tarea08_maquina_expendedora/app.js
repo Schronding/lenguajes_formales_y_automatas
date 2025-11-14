@@ -1,9 +1,13 @@
+document.addEventListener('DOMContentLoaded', () => {
+    actualizarStockUI();
+});
+
 const inventario = {
     'A1': { nombre: 'Nito', precio: 18, stock: 5 },
-    'A2': { nombre: 'Doritos', precio: 17, stock: 4 },
+    'A2': { nombre: 'Chetos', precio: 17, stock: 4 },
     'A3': { nombre: 'Sabritas', precio: 16, stock: 6 },
     'B1': { nombre: 'Del Valle', precio: 20, stock: 3 },
-    'B2': { nombre: 'Magdalenas', precio: 22, stock: 4 },
+    'B2': { nombre: 'Mantecadas', precio: 22, stock: 4 },
     'B3': { nombre: 'Ruffles', precio: 17, stock: 0 },
 };
 
@@ -15,6 +19,24 @@ const bandejaCambio = document.getElementById('bandeja-cambio');
 
 document.getElementById('btn-seleccionar').addEventListener('click', seleccionarProducto);
 document.getElementById('btn-cancelar').addEventListener('click', cancelarTransaccion);
+
+function actualizarStockUI() {
+    for (const codigo in inventario) {
+        const producto = inventario[codigo];
+        const elProducto = document.querySelector(`.producto[data-codigo="${codigo}"]`);
+        
+        if (elProducto) {
+            const elStock = elProducto.querySelector('.stock-contador');
+            elStock.textContent = `Disp: ${producto.stock}`;
+            
+            if (producto.stock === 0) {
+                elProducto.classList.add('agotado');
+            } else {
+                elProducto.classList.remove('agotado');
+            }
+        }
+    }
+}
 
 function actualizarPantalla(mensaje) {
     pantalla.textContent = mensaje;
@@ -43,7 +65,9 @@ function seleccionarProducto() {
     }
 
     if (saldoActual < producto.precio) {
-        actualizarPantalla(`Saldo insuficiente. Faltan $${(producto.precio - saldoActual).toFixed(2)}`);
+        actualizarPantalla(`Saldo insuficiente. $${saldoActual.toFixed(2)} devueltos.`);
+        entregarCambio(saldoActual);
+        saldoActual = 0;
         return;
     }
 
@@ -54,13 +78,15 @@ function seleccionarProducto() {
     entregarProducto(producto.nombre);
     entregarCambio(cambio);
     actualizarPantalla(`Gracias por su compra!`);
+    actualizarStockUI();
+    inputCodigo.value = "";
 }
 
 function cancelarTransaccion() {
     if (saldoActual > 0) {
         entregarCambio(saldoActual);
         saldoActual = 0;
-        actualizarPantalla("Transacción cancelada.");
+        actualizarPantalla("Transacción cancelada. Dinero devuelto.");
     } else {
         actualizarPantalla("Bienvenido");
     }
@@ -70,17 +96,22 @@ function cancelarTransaccion() {
 
 function entregarProducto(nombreProducto) {
     bandejaProducto.textContent = nombreProducto;
-    bandejaProducto.style.color = "#fff";
+    bandejaProducto.classList.add('producto-entregado');
+    
+    setTimeout(() => {
+        bandejaProducto.classList.remove('producto-entregado');
+    }, 500);
 }
 
 function entregarCambio(monto) {
-    bandejaCambio.textContent = `$${monto.toFixed(2)}`;
-    bandejaCambio.style.color = "#fff";
+    if (monto > 0) {
+        bandejaCambio.textContent = `$${monto.toFixed(2)}`;
+    } else {
+        bandejaCambio.textContent = "$0.00";
+    }
 }
 
 function limpiarSalidas() {
-    bandejaProducto.textContent = "Producto";
-    bandejaCambio.textContent = "Cambio";
-    bandejaProducto.style.color = "#aaa";
-    bandejaCambio.style.color = "#aaa";
+    bandejaProducto.textContent = "";
+    bandejaCambio.textContent = "";
 }
