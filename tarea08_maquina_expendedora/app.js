@@ -28,7 +28,7 @@ function actualizarStockUI() {
         
         if (elProducto) {
             const elStock = elProducto.querySelector('.stock-contador');
-            elStock.textContent = `Disp: ${producto.stock}`;
+            elStock.textContent = `Disponibles: ${producto.stock}`;
             
             if (producto.stock === 0) {
                 elProducto.classList.add('agotado');
